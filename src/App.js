@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import HomePage from './pages/home-page.component'
-import {Route, Switch, withRouter } from 'react-router-dom'
+import {Route, Switch } from 'react-router-dom'
 import {Hats} from './pages/Hats.component'
 
 
@@ -20,4 +20,4 @@ function App() {
   );
 }
 
-export default withRouter(App);
+export default App;
