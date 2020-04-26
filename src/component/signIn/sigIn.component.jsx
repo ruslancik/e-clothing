@@ -2,7 +2,7 @@ import React from 'react'
 import './signIn.component.scss'
 import FormInput from '../form-input/form-input.component'
 import CustomButton from '../custom-button/custom-button.component'
-import {signInWithGoogle} from '../../firebase/firebase.utils'
+import {signInWithGoogle, auth} from '../../firebase/firebase.utils'
 
 class SignIn extends React.Component {
 
@@ -15,9 +15,16 @@ class SignIn extends React.Component {
         }
     }
     
-    handleSubmit = event => {
+    handleSubmit =  async event => {
         event.preventDefault();
-        this.setState({email:'', password:''})
+        const {email, password} = this.state;
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({email:'', password:''})
+        } catch (error) {
+            console.log('there is no such user', error.message);
+            alert('There is no such email or password. Please try again.')
+        }
     }
 
     handleChange = event => {
@@ -28,7 +35,7 @@ class SignIn extends React.Component {
     render() {
         return (
             <div className='sign-in'>
-                <h1>I already have account</h1>
+                <h1 className='title'>I already have account</h1>
                 <span>Sign in with your email and password</span>
                 <form onSubmit={this.handleSubmit}>
                     <FormInput
