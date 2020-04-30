@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import HomePage from './pages/home/home-page.component'
-import {Route, Switch } from 'react-router-dom'
+import {Route, Switch, Redirect } from 'react-router-dom'
 import {Hats} from './pages/hats/hats.component'
 import ShopPage from './pages/shop/shop.component'
 import Header from './component/header/header.component'
@@ -9,23 +9,21 @@ import SignInAndSignOut from '../src/pages/SignInAndSignOut/signIn-and-signOut.c
 import { auth } from './firebase/firebase.utils'
 import {createUserProfileDocument} from './firebase/firebase.utils'
 
+import {connect} from 'react-redux'
+import {setCurrentUser} from './redux/user/user.actions'
+
 
  
 
 class App extends React.Component {
 
-  constructor(){
-    super()
-
-    this.state = {
-      currentUser : null
-    }
-  }
-
   // its save us from javascript memory leaks. Its unsubscribe Auth
   unSubscribeFromAuth = null;
 
   componentDidMount(){
+
+    // this is the setCurrentUser action
+    const {setCurrentUser} = this.props;
 
    this.unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
@@ -33,17 +31,15 @@ class App extends React.Component {
       const userRef = await createUserProfileDocument(userAuth);
 
       userRef.onSnapshot(snapShot => {
-        this.setState({
-          currentUser: {
+        setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
-            }
-          }, () => console.log(this.state)
-        );
+            
+          });
       })
 
     } else {
-      this.setState({currentUser: userAuth})
+      setCurrentUser(userAuth)
     }
         
      
@@ -60,11 +56,13 @@ class App extends React.Component {
 
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header/>
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
-          <Route exact path='/signin' component={SignInAndSignOut} />
+          <Route exact path='/signin' 
+            render={() => this.props.currentUser ? <Redirect to='/' /> : <SignInAndSignOut />}
+           />
           <Route exact path='/hats' component={Hats} />
           <Route path='/hats/:hats' component={Hats} />
         </Switch>
@@ -72,7 +70,16 @@ class App extends React.Component {
     );
   }
   
+ }
 
-  }
+ // we use Redirect beacause of we need redux state here(mapStateToProps). Otherwise we use 'null' as a 
+ // first parametr in 'connect' HOC
+ const mapStateToProps = ({user}) => ({
+   currentUser : user.currentUser
+ })
 
-export default App;
+ const mapDispatchToProps = dispatch => ({
+   setCurrentUser : user => dispatch(setCurrentUser(user))
+ }) 
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
