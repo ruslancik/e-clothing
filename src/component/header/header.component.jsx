@@ -37,6 +37,7 @@ const Header = ({currentUser, hidden}) => {
 }
 
 // destructing currentUser and hidden 
+// currentUser : state.user.currentUser
 const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => ({
     currentUser,
     hidden
