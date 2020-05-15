@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import HomePage from './pages/home/home-page.component'
 import {Route, Switch, Redirect } from 'react-router-dom'
-import {Hats} from './pages/hats/hats.component'
+import HomePage from './pages/home/home-page.component'
+import Hats from './pages/hats/hats.component'
 import ShopPage from './pages/shop/shop.component'
+import Checkout from './pages/checkout/checkout.component'
 import Header from './component/header/header.component'
 import SignInAndSignOut from '../src/pages/SignInAndSignOut/signIn-and-signOut.component'
 import { auth } from './firebase/firebase.utils'
@@ -63,6 +64,7 @@ class App extends React.Component {
           <Route exact path='/signin' 
             render={() => this.props.currentUser ? <Redirect to='/' /> : <SignInAndSignOut />}
            />
+          <Route exact path = '/checkout' component={Checkout} />
           <Route exact path='/hats' component={Hats} />
           <Route path='/hats/:hats' component={Hats} />
         </Switch>
