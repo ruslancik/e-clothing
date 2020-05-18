@@ -9,11 +9,12 @@
   
     .items {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 10px;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      justify-content: center;
+      //grid-gap: 10px;
   
       & .collection-item {
-        margin-bottom: 30px;
+        margin-bottom: 50px;
       }
     }
   }
