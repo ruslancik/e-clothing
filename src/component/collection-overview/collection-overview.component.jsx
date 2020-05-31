@@ -1,13 +1,15 @@
 import React from 'react'
-import './collection-overview.component.scss'
 
 import CollectionPreview from '../collection-preview/collection-preview.component'
 
 import {connect} from 'react-redux'
 import {selectCollectionForPreview} from '../../redux/shop/shop.selector'
 
+//style
+import { CollectionsOverviewContainer } from './collection-overview.style';
+
 const CollectionOverview = ({collections}) => (
-    <div className="collection-overview">
+    <CollectionsOverviewContainer>
 
        {   collections.map( collection => (
               <CollectionPreview
@@ -15,7 +17,7 @@ const CollectionOverview = ({collections}) => (
                title={collection.title}
                items={collection.items} />
             ))}
-    </div>
+    </CollectionsOverviewContainer>
 )
 
 const mapStateToProps = state => ({

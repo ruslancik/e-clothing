@@ -1,29 +1,35 @@
 import React from 'react'
-import './cart-dropdown.component.scss'
 
 import CustomButton from '../custom-button/custom-button.component'
 import CartItem from '../cart-item/cart-item.component'
-import {connect} from 'react-redux'
-import {selectCartItems} from '../../redux/cart/cart.selector'
+
 import {withRouter} from 'react-router-dom'
+
+import {connect} from 'react-redux'
+
+import {selectCartItems} from '../../redux/cart/cart.selector'
 import { toggleCartAction } from '../../redux/cart/cart.actions'
 
+//Style
+import {CartDropdownStyle, CartItemStyle, Message} from './cart-dropdown.style'
 
-const CartDropdown = ({cartItems, history, dispatch}) => (
-    <div className="cart-dropdown">
-        <div className="cart-items">
+
+
+const CartDropdown = ({cartItems, history, dispatch}) =>  (
+    <CartDropdownStyle>
+        <CartItemStyle>
             {
                 cartItems.length ?
                 cartItems.map(cartItem => <CartItem keys={cartItem.id} item={cartItem} />)
-                : <span className="empty-message">Your cart is empty.</span>
+                : <Message> Your cart is empty.</Message>
             }
-        </div>
+        </CartItemStyle>
         <CustomButton onClick={()=> {
             history.push('/checkout')
             //another way of calling dispatch function (shorthand)
             dispatch(toggleCartAction())
             }}>GO TO CHECKOUT</CustomButton>
-    </div>
+    </CartDropdownStyle>
 )
 
 // there is also have 'createStructuredSelector()' for selecting multiple selectors easily
