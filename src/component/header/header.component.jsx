@@ -1,39 +1,45 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import  logo from '../../assets/logo.png'
-import './header.component.scss'
 import {auth} from '../../firebase/firebase.utils'
 import { connect } from 'react-redux'
 import CartIcon from '../cart-icon/cart-icon.component'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
+//style
+import {
+    HeaderContainer,
+    LogoContainer,
+    OptionsContainer,
+    OptionLink,
+    UserGreeting
+} from './header.style'
 
 
 const Header = ({currentUser, hidden}) => {
     return (
-        <div className='header'>
-            <Link className='logo-container' to='/'>
+        <HeaderContainer>
+            <LogoContainer to='/'>
                <img className='logo' src={logo} alt="logo" />
-            </Link>
-            <div className="options">
-                <Link className='option' to='/shop'>Shop</Link>
-                <Link className='option' to='/contact'>Contact</Link>
+            </LogoContainer>
+            <OptionsContainer>
+                <OptionLink to='/shop'>Shop</OptionLink>
+                <OptionLink to='/contact'>Contact</OptionLink>
                 {
                     currentUser ?
                     <>
-                    <div className="option" onClick={() => auth.signOut()}>Sign Out</div>
-                    <div className='userGreeting'>{`Hi, ${currentUser.displayName}`}</div>
+                    <OptionLink as='div' onClick={() => auth.signOut()}>Sign Out</OptionLink>
+                    <UserGreeting>{`Hi, ${currentUser.displayName}`}</UserGreeting>
                     </>
                     :
-                    <Link className='option' to='/signin'>Sign In</Link>
+                    <OptionLink to='/signin'>Sign In</OptionLink>
 
                 }
                 <CartIcon />
-            </div>
+            </OptionsContainer>
             {
                 hidden ? null :
                 <CartDropdown/>
             }
-         </div>
+         </HeaderContainer>
     )
 }
 
