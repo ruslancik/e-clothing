@@ -26,3 +26,4 @@ const MenuItem = ({title, imageUrl, size, history, linkUrl, match}) => {
 // this withRouter(MenuItem) has access to related with  our router 
 export default withRouter(MenuItem)
 
+
